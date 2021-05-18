@@ -1,0 +1,7 @@
+[user]
+	email = masoom.shaikh@gmail.com
+	name = Shaikh, Masoom
+[core]
+	editor = vim
+[diff]
+	tool = vimdiff

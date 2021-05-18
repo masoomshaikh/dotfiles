@@ -1,0 +1,6 @@
+grub> ls
+(hd0) (hd0,msdos2) (hd0,msdos1)
+grub> root=(hd0,msdos1)
+grub> linux /vmlinuz root=/dev/sda2
+grub> initrd /initrd.img
+grub> boot

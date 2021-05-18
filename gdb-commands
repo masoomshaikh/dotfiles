@@ -1,0 +1,7 @@
+set logging on
+set print elements 0
+set inferior-tty <>
+show inferior-tty
+
+handle SIGTERM pass
+
