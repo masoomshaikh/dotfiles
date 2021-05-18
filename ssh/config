@@ -1,0 +1,19 @@
+Host hiawsmblxbambld02
+Host awsohlx600as202
+
+Host arch
+	HostName 127.0.0.1
+	Port 2222
+Host amazon
+	HostName 127.0.0.1
+	Port 2223
+Host debian
+	HostName 127.0.0.1
+	Port 2224
+
+Host host-arch
+	HostName 192.168.56.104
+Host host-amazon
+	HostName 192.168.56.102
+Host host-debian
+	HostName 192.168.56.105
