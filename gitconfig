@@ -3,5 +3,3 @@
 	name = Shaikh, Masoom
 [core]
 	editor = vim
-[diff]
-	tool = vimdiff

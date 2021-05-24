@@ -4,4 +4,3 @@ set inferior-tty <>
 show inferior-tty
 
 handle SIGTERM pass
-
