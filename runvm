@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [ "$1" = "" ]; then
+	echo "usage: $0 <filename.>"
+	exit 0
+fi
+
+SPICE_PORT=5900
+
+cd $(dirname $0) && qemu-system-x86_64 \
+	-daemonize \
+	-enable-kvm \
+	-cpu host \
+	-smp cores=4,threads=2 \
+	-m 8G \
+	-soundhw hda \
+	\
+	-nic user,hostfwd=tcp:127.0.0.1:2222-:22 \
+	\
+	-vga qxl \
+	-device usb-ehci -device usb-tablet \
+	-spice port=${SPICE_PORT},disable-ticketing \
+	\
+	-device virtio-serial \
+	-device virtserialport,chardev=vdagent,name=com.redhat.spice.0 \
+	-chardev spicevmc,id=vdagent,name=vdagent \
+	\
+	-device ich9-usb-ehci1,id=usb \
+	-device ich9-usb-uhci1,masterbus=usb.0,firstport=0,multifunction=on \
+	-device ich9-usb-uhci2,masterbus=usb.0,firstport=2 \
+	-device ich9-usb-uhci3,masterbus=usb.0,firstport=4 \
+	-chardev spicevmc,name=usbredir,id=usbredirchardev1 \
+	-device usb-redir,chardev=usbredirchardev1,id=usbredirdev1 \
+	-chardev spicevmc,name=usbredir,id=usbredirchardev2 \
+	-device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \
+	-chardev spicevmc,name=usbredir,id=usbredirchardev3 \
+	-device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \
+	\
+	-hda "$@"
+
+case $1 in
+	arch.qcow2)
+		spicy --title 'Arch Linux' -h localhost -p ${SPICE_PORT} &
+		;;
+	ubuntu20.04.qcow2)
+		spicy --title 'Ubuntu 20.04 LTS' -h localhost -p ${SPICE_PORT} &
+		;;
+	ubuntu16.04.qcow2)
+		spicy --title 'Ubuntu 16.04 LTS' -h localhost -p ${SPICE_PORT} &
+		;;
+	FreeBSD-12.2-RELEASE-amd64.qcow2)
+		spicy --title 'FreeBSD 12.2 amd64' -h localhost -p ${SPICE_PORT} &
+		;;
+	*)
+		;;
+esac
