@@ -37,6 +37,7 @@ set guifont=Courier\ Prime\ 13
 
 call plug#begin('~/.vim/plugged')
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	"Plug 'tpope/vim-fugitive', {'tag': 'v3.3'}
 call plug#end()
 
 runtime! coc.vim
