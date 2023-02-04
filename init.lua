@@ -49,6 +49,9 @@ vim.cmd([[
 	"colorscheme nord
 ]])
 
+require'lspconfig'.csharp_ls.setup{}
+require'lspconfig'.pylsp.setup{}
+
 require('nvim-treesitter.configs').setup {
 	highlight = {
 		enable = true,
@@ -72,7 +75,7 @@ do_map_key('gd', fzf.lsp_definitions)
 do_map_key('gD', vim.lsp.buf.declaration)
 do_map_key('gi', fzf.lsp_implementations)
 do_map_key('gr', fzf.lsp_references)
-do_map_key('gy', vim.lsp.buf.type_definition)
+do_map_key('gy', fzf.lsp_type_definitions)
 
 do_map_key('<space>a', vim.lsp.buf.code_action)
 do_map_key('<space>b', fzf.buffers)
