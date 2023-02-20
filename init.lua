@@ -26,6 +26,7 @@ require('packer').startup(function(use)
 	use 'hrsh7th/nvim-cmp'
 	use 'hrsh7th/cmp-nvim-lsp'
 	use 'hrsh7th/cmp-path'
+	use 'hrsh7th/cmp-buffer'
 	use 'hrsh7th/cmp-vsnip'
 	use 'hrsh7th/vim-vsnip'
 	use 'hrsh7th/cmp-nvim-lsp-signature-help'
@@ -46,7 +47,7 @@ end)
 
 vim.cmd([[
 	colorscheme darkplus
-	"colorscheme nord
+	"colorscheme desert
 ]])
 
 require'lspconfig'.csharp_ls.setup{}
@@ -80,6 +81,7 @@ do_map_key('gy', fzf.lsp_type_definitions)
 do_map_key('<space>a', vim.lsp.buf.code_action)
 do_map_key('<space>b', fzf.buffers)
 do_map_key('<space>f', fzf.git_files)
+do_map_key('<space>F', fzf.find_files)
 do_map_key('<space>g', fzf.diagnostics)
 do_map_key('<space>k', vim.lsp.buf.hover)
 do_map_key('<space>r', vim.lsp.buf.rename)
@@ -96,6 +98,7 @@ cmp.setup{
 	sources =  {
 		{ name = 'nvim_lsp' },
 		{ name = 'path' },
+		{ name = 'buffer' },
 		{ name = 'nvim_lsp_signature_help' }
 	},
 	mapping = cmp.mapping.preset.insert({
