@@ -1,24 +1,34 @@
+let s:first_rtp=split(&rtp, ",")[0]
+function s:init_backup_undo()
+	for s:d in ["undo", "backup"]
+		if !isdirectory(s:d)
+			call mkdir(s:first_rtp . "/" . s:d, "p")
+		endif
+	endfor
+	exec 'set backupdir=' . s:first_rtp . '/backup'
+	exec 'set undodir=' . s:first_rtp . '/undo'
+	set undofile
+endfunction
+call s:init_backup_undo()
+
 set number
 set tabstop=4
 set shiftwidth=4
 
-runtime! ftplugin/man.vim
-
-colorscheme desert
-
-for s:d in ["undo", "backup"]
-	if !isdirectory(s:d)
-		call mkdir($HOME .. "/.vim/" .. s:d, "p")
-	endif
-endfor
-set backupdir=~/.vim/backup
-set undodir=~/.vim/undo
-set undofile
-
 set mouse=a
-set guifont=Courier\ New:h12
+runtime! ftplugin/man.vim
+colorscheme desert
+set background=dark
 
-call plug#begin('~/.vim/plugged')
+if has('gui_running')
+	if has('win32')
+		set guifont=Courier\ New:h12
+	else
+		set guifont=Courier\ New\ 12
+	endif
+endif
+
+call plug#begin(s:first_rtp . '/plugged')
 	Plug 'tpope/vim-fugitive', {'tag': 'v3.3'}
 	Plug 'tpope/vim-dispatch', {'tag': 'v1.8'}
 
@@ -35,18 +45,43 @@ call plug#begin('~/.vim/plugged')
 	Plug 'prabirshrestha/asyncomplete-lsp.vim'
 call plug#end()
 
-" bindings like https://helix-editor.com/
-nmap <silent> <leader>t :LspDocumentSwitchSourceHeader<cr>
+" roughly mimic https://helix-editor.com/
+nnoremap <silent> <space>b :Buffers<cr>
+nnoremap <silent> <space>f :GitFiles<cr>
+nnoremap <silent> <space>F :Files<cr>
 
-nmap <silent> gd :LspDefinition<cr>
-nmap <silent> gD :LspDeclaration<cr>
-nmap <silent> gr :LspReferences<cr>
+" avoid ugly inline highlights
+let g:lsp_diagnostics_highlights_enabled = 0
+let g:lsp_diagnostics_virtual_text_enabled = 0
 
-nmap <silent> <space>S :LspWorkspaceSymbol<cr>
-nmap <silent> <space>a :LspCodeAction<cr>
-nmap <silent> <space>b :Buffers<cr>
-nmap <silent> <space>f :GitFiles<cr>
-nmap <silent> <space>g :LspDocumentDiagnostics<cr>
-nmap <silent> <space>k :LspHover<cr>
-nmap <silent> <space>r :LspRename<cr>
-nmap <silent> <space>s :LspDocumentSymbol<cr>
+function! s:on_lsp_buffer_enabled() abort
+	setlocal omnifunc=lsp#complete
+	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+
+	nnoremap <buffer> [g <plug>(lsp-previous-reference)
+	nnoremap <buffer> ]g <plug>(lsp-next-reference)
+
+	nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+	nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+	nnoremap <leader>t <plug>(lsp-switch-source-header)
+
+	nnoremap <buffer> gd <plug>(lsp-definition)
+	nnoremap <buffer> gD <plug>(lsp-declaration)
+	nnoremap <buffer> gr <plug>(lsp-references)
+	nnoremap <buffer> gi <plug>(lsp-implementation)
+	nnoremap <buffer> gy <plug>(lsp-type-definition)
+
+	nnoremap <buffer> <silent> <space>a :LspCodeAction<cr>
+	nnoremap <buffer> <space>s <plug>(lsp-document-symbol-search)
+	nnoremap <buffer> <space>S <plug>(lsp-workspace-symbol-search)
+	nnoremap <buffer> <space>g <plug>(lsp-document-diagnostics)
+	nnoremap <buffer> <space>k <plug>(lsp-hover)
+	nnoremap <buffer> <space>r <plug>(lsp-rename)
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
