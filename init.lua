@@ -34,7 +34,7 @@ require('packer').startup(function(use)
 	use 'simrat39/rust-tools.nvim'
 
 	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.0',
+		'nvim-telescope/telescope.nvim', tag = '0.1.8',
 		requires = {
 			{ 'nvim-lua/plenary.nvim' }
 		}

@@ -1,0 +1,27 @@
+
+[font]
+size = 12
+
+[font.normal]
+family = "Courier New"
+
+[[keyboard.bindings]]
+action = "Quit"
+key = "W"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "CreateNewWindow"
+key = "N"
+mods = "Control|Shift"
+
+[terminal.shell]
+program = 'C:\Windows\system32\cmd.exe'
+
+[window]
+opacity = 0.9
+
+[general]
+working_directory = 'C:\Users\mashaikh\'
+
+[terminal]
