@@ -103,6 +103,7 @@ do_map_key("<space>k", vim.lsp.buf.hover)
 do_map_key("<space>r", vim.lsp.buf.rename)
 do_map_key("<space>s", fzf.lsp_document_symbols)
 do_map_key("<space>S", fzf.lsp_dynamic_workspace_symbols)
+do_map_key("<space>\\", fzf.grep_string)
 
 vim.lsp.enable("clangd")
 vim.lsp.enable("gopls")
