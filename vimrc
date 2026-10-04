@@ -14,6 +14,7 @@ call s:init_backup_undo()
 set number
 set tabstop=4
 set shiftwidth=4
+set grepprg=git\ grep
 
 set mouse=a
 runtime! ftplugin/man.vim

@@ -1,5 +1,9 @@
 [user]
-	email = masoom.shaikh@gmail.com
+	email = Masoom.Shaikh@amd.com
 	name = Shaikh, Masoom
 [core]
 	editor = vim
+[grep]
+	lineNumber = true
+	column = true
+	threads = 0
